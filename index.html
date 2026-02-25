@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html ng-app="tableSortApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AngularJS Table Sorting — Arpita Madhukar</title>
+
+  <!-- AngularJS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-controller="TableSortController as vm">
+
+  <header>
+    <div class="eyebrow">AngularJS Microproject</div>
+    <h1>Dynamic Table <span>Sorting</span></h1>
+    <div class="subtitle">Click any column header to sort &mdash; toggle for ascending / descending</div>
+  </header>
+
+  <div class="card">
+
+    <div class="card-header">
+      <span class="info">
+        Showing <strong>{{ vm.filteredCount() }}</strong> of <strong>{{ vm.data.length }}</strong> records
+      </span>
+      <div class="sort-status" ng-if="vm.data.length > 0">
+        Sorted by <span class="badge">{{ vm.sortColumn || 'none' }}</span>
+        <span class="badge">{{ vm.sortReverse ? 'DESC ↓' : 'ASC ↑' }}</span>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th ng-click="vm.sortBy('id')"
+                ng-class="{ active: vm.sortColumn === 'id' }"
+                ng-attr-data-dir="{{ vm.sortColumn === 'id' ? (vm.sortReverse ? 'desc' : 'asc') : '' }}">
+              <div class="th-inner">
+                ID
+                <span class="sort-icon">
+                  <span class="arrow-up"></span>
+                  <span class="arrow-down"></span>
+                </span>
+              </div>
+            </th>
+
+            <th ng-click="vm.sortBy('name')"
+                ng-class="{ active: vm.sortColumn === 'name' }"
+                ng-attr-data-dir="{{ vm.sortColumn === 'name' ? (vm.sortReverse ? 'desc' : 'asc') : '' }}">
+              <div class="th-inner">
+                Name
+                <span class="sort-icon">
+                  <span class="arrow-up"></span>
+                  <span class="arrow-down"></span>
+                </span>
+              </div>
+            </th>
+
+            <th ng-click="vm.sortBy('category')"
+                ng-class="{ active: vm.sortColumn === 'category' }"
+                ng-attr-data-dir="{{ vm.sortColumn === 'category' ? (vm.sortReverse ? 'desc' : 'asc') : '' }}">
+              <div class="th-inner">
+                Department
+                <span class="sort-icon">
+                  <span class="arrow-up"></span>
+                  <span class="arrow-down"></span>
+                </span>
+              </div>
+            </th>
+
+            <th ng-click="vm.sortBy('marks')"
+                ng-class="{ active: vm.sortColumn === 'marks' }"
+                ng-attr-data-dir="{{ vm.sortColumn === 'marks' ? (vm.sortReverse ? 'desc' : 'asc') : '' }}">
+              <div class="th-inner" style="justify-content:flex-end;">
+                Marks / Price
+                <span class="sort-icon">
+                  <span class="arrow-up"></span>
+                  <span class="arrow-down"></span>
+                </span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr ng-if="vm.data.length === 0">
+            <td colspan="4">
+              <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>No Records Found</p>
+              </div>
+            </td>
+          </tr>
+
+          <tr ng-repeat="item in vm.data | orderBy:vm.sortKey:vm.sortReverse track by item.id"
+              ng-if="vm.data.length > 0">
+            <td class="col-id" ng-class="{ 'col-sorted': vm.sortColumn === 'id' }">
+              #{{ item.id | number:0 }}
+            </td>
+            <td class="col-name" ng-class="{ 'col-sorted': vm.sortColumn === 'name' }">
+              {{ item.name || '—' }}
+            </td>
+            <td class="col-category" ng-class="{ 'col-sorted': vm.sortColumn === 'category' }">
+              <span class="cat-badge" ng-class="'cat-' + (item.category | replace)">
+                {{ item.category || '—' }}
+              </span>
+            </td>
+            <td class="col-value" ng-class="{ 'col-sorted': vm.sortColumn === 'marks' }">
+              {{ item.marks != null ? (item.marks | number:0) : '—' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer">
+      <span>Click column headers to sort • Click again to toggle order</span>
+      <span class="author">KHADE ARPITA MADHUKAR</span>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="app.js"></script>
+
+</body>
+</html>
